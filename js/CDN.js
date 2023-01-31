@@ -5,6 +5,8 @@ import {
     signInWithEmailAndPassword,
     onAuthStateChanged,
     signOut,
+    GoogleAuthProvider,
+    signInWithPopup,
 } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -17,6 +19,8 @@ const firebaseConfig = {
     measurementId: "G-GEGVTFQ576",
 };
 
+const providergoogle = new GoogleAuthProvider();
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
@@ -26,8 +30,9 @@ const pass = document.getElementById("pass");
 const crear = document.getElementById("crear");
 const header = document.getElementById("header");
 const cerrar = document.getElementById("cerrar");
-const div = document.getElementById('inicio');
-const divOcultar = document.getElementById('ocultar');
+const div = document.getElementById("inicio");
+const divOcultar = document.getElementById("ocultar");
+const gog = document.getElementById("google");
 
 //crear un usuario nuevo
 
@@ -67,9 +72,8 @@ onAuthStateChanged(auth, (user) => {
     if (user) {
         console.log(user.email);
         header.innerHTML = user.email;
-        div.classList.add('hide')
-        divOcultar.classList.remove('hide')
-        
+        div.classList.add("hide");
+        divOcultar.classList.remove("hide");
 
         // ...
     } else {
@@ -84,12 +88,35 @@ cerrar.addEventListener("click", function () {
     signOut(auth)
         .then(() => {
             // Sign-out successful.
-            div.classList.remove('hide')
-            divOcultar.classList.add('hide')
+            div.classList.remove("hide");
+            divOcultar.classList.add("hide");
         })
         .catch((error) => {
             // An error happened.
             alert("Error");
             console.log(error);
+        });
+});
+
+
+gog.addEventListener("click", function () {
+    signInWithPopup(auth, providergoogle)
+        .then((result) => {
+            // This gives you a Google Access Token. You can use it to access the Google API.
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            // The signed-in user info.
+            const user = result.user;
+            // ...
+        })
+        .catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.customData.email;
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+            // ...
         });
 });

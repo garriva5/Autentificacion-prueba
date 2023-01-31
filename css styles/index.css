@@ -43,6 +43,8 @@ header{
     font-size: 1.3rem;
     border: none;
     margin: 2rem 3rem;
+    border-radius: 5px;
+    padding: 5px;
 }
 
 .boton:hover{
