@@ -1,0 +1,78 @@
+:root{
+    --oscuro: #000000;
+    --blanco: #ffffff;
+    --morado: #9932CC;
+}
+
+html{
+    color: red ;
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body{
+    background-color: var(--oscuro);
+}
+
+header{
+    text-align: right;
+    padding: 1rem 1rem;
+
+}
+
+.sing-in {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .sing-in input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+
+.boton {
+    background-color: rgb(255, 0, 0);
+    color: var(--blanco); /* EL PADDING ES PARA PONER COMO UN MARGEN O SEPARACION EN TODAS LAS DIRECCIOES*/
+    margin-top: 2rem;
+    font-size: 1.3rem;
+    border: none;
+    margin: 2rem 3rem;
+}
+
+.boton:hover{
+    background-color: rgba(255, 0, 0, 0.462);
+
+}
+
+@media (max-width: 468px) { 
+    .boton{
+        margin: 1rem 1rem;
+        margin-top: 1rem;
+    }
+ }
+
+ @media (max-width: 780px) { 
+    .boton{
+        margin: 1rem 1rem;
+        margin-top: 1rem;
+    }
+     
+  }
+
+.hide{
+    display: none;
+}
+
+.ocultarboton{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
