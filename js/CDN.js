@@ -7,6 +7,7 @@ import {
     signOut,
     GoogleAuthProvider,
     signInWithPopup,
+    FacebookAuthProvider,
 } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -20,6 +21,7 @@ const firebaseConfig = {
 };
 
 const providergoogle = new GoogleAuthProvider();
+const providerfacebook = new FacebookAuthProvider();
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -33,6 +35,7 @@ const cerrar = document.getElementById("cerrar");
 const div = document.getElementById("inicio");
 const divOcultar = document.getElementById("ocultar");
 const gog = document.getElementById("google");
+const face = document.getElementById("facebook");
 
 //crear un usuario nuevo
 
@@ -98,7 +101,6 @@ cerrar.addEventListener("click", function () {
         });
 });
 
-
 gog.addEventListener("click", function () {
     signInWithPopup(auth, providergoogle)
         .then((result) => {
@@ -120,3 +122,28 @@ gog.addEventListener("click", function () {
             // ...
         });
 });
+
+face.addEventListener("click", function () {
+    signInWithPopup(auth, providerfacebook)
+        .then((result) => {
+            // The signed-in user info.
+            const user = result.user;
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            const credential =
+                FacebookAuthProvider.credentialFromResult(result);
+            const accessToken = credential.accessToken;
+            // ...
+        })
+        .catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.customData.email;
+            // The AuthCredential type that was used.
+            const credential = FacebookAuthProvider.credentialFromError(error);
+            // ...
+        });
+});
+
+// https://pruebas-cf6a8.firebaseapp.com/__/auth/handler
