@@ -39,7 +39,7 @@ header{
   }
   
 
-  /*-----------------------Todos los Botones----------*/
+  /*-----------------------Todos los Botones------------*/
 .boton {
     background-color: rgb(255, 0, 0);
     color: var(--blanco); /* EL PADDING ES PARA PONER COMO UN MARGEN O SEPARACION EN TODAS LAS DIRECCIOES*/ 
