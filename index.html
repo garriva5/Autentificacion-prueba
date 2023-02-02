@@ -19,7 +19,7 @@
                     <h1>Autenticacion de cuentas</h1>
                     <p>Ingresa tu correo electronico y una contraseña</p>
                     
-                    <label>Email</label>
+                    <label> Email</label>
                     <input type="email" id="email" value="" placeholder="******@*****.com">
                     <br>
                     <label> Password </label>
@@ -40,9 +40,25 @@
 
             </div>
 
-            <div id ='ocultar' class="ocultarboton hide">
-                <button id = "cerrar" class="boton" >Cerrar</button>
+            <div id ='ocultar' class="hide">
+                <div class="sing-in">  
 
+                        <h2>Ingrese los datos correspondientes </h2>
+                        <label> Nombres </label>
+                        <input type="text" id="nom" value="" placeholder="Nombre Completo">
+                        <br>
+                        <label> Apellidos </label>
+                        <input  type="text" id="apell" value="" placeholder="Apellidos">            
+                        <br>
+                        <label> Edad </label>
+                        <input  type="number" id="edad" value="" placeholder=" Edad 18"> 
+
+                    <div class="Botonesparaguardar">
+                        <button id = "Guardar" class="boton" >Guardar</button>
+                        <button id = "cerrar" class="boton" >Cerrar sesion</button>
+                    </div>
+                </div>   
+                  
             </div>
 
     </main>

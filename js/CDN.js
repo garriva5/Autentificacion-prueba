@@ -10,6 +10,13 @@ import {
     FacebookAuthProvider,
 } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
 
+import {
+    getFirestore,
+    collection,
+    addDoc,
+    // getDoc,
+} from "https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js";
+
 const firebaseConfig = {
     apiKey: "AIzaSyBcKoDCCMIBZY8KetZ6jQNTGbtiRfNWKh4",
     authDomain: "pruebas-cf6a8.firebaseapp.com",
@@ -23,8 +30,9 @@ const firebaseConfig = {
 const providergoogle = new GoogleAuthProvider();
 const providerfacebook = new FacebookAuthProvider();
 
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig); /*inicializa firebase*/
 const auth = getAuth(app);
+const db = getFirestore(app); // Initialize Cloud Firestore and get a reference to the service
 
 const log = document.getElementById("log");
 const email = document.getElementById("email");
@@ -36,6 +44,11 @@ const div = document.getElementById("inicio");
 const divOcultar = document.getElementById("ocultar");
 const gog = document.getElementById("google");
 const face = document.getElementById("facebook");
+const guardar = document.getElementById("Guardar");
+const nombre = document.getElementById("nom");
+const apellido = document.getElementById("apell");
+const edad = document.getElementById("edad");
+
 
 //crear un usuario nuevo
 
@@ -146,4 +159,23 @@ face.addEventListener("click", function () {
         });
 });
 
-// https://pruebas-cf6a8.firebaseapp.com/__/auth/handler
+
+guardar.addEventListener('click', async function () {
+    try {
+        const docRef = await addDoc(collection(db, "users"), {
+            Nombre: nombre.value,
+            Apellidos: apellido.value,
+            Edad: edad.value,
+        });
+        console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
+});
+
+
+
+
+
+
+// // https://pruebas-cf6a8.firebaseapp.com/__/auth/handler
