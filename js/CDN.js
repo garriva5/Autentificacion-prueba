@@ -6,7 +6,6 @@ import {
     onAuthStateChanged,
     signOut,
     GoogleAuthProvider,
-    signInWithPopup,
     FacebookAuthProvider,
     TwitterAuthProvider,
     signInWithPopup,
