@@ -101,7 +101,7 @@ cerrar.addEventListener("click", function () {
 });
 
 gog.addEventListener("click", function () {
-    signInWithPopup(auth, providergoogle)
+    signInWithPopup(auth, providerfacebook)
         .then((result) => {
             // This gives you a Google Access Token. You can use it to access the Google API.
             const credential = GoogleAuthProvider.credentialFromResult(result);
@@ -127,9 +127,11 @@ face.addEventListener("click", function () {
         .then((result) => {
             // The signed-in user info.
             const user = result.user;
-            // This gives you a Facebook Access Token. You can use it to access the Facebook API   ..
-            const credential =FacebookAuthProvider.credentialFromResult(result); 
+
+            // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+            const credential =FacebookAuthProvider.credentialFromResult(result);
             const accessToken = credential.accessToken;
+
             // ...
         })
         .catch((error) => {
@@ -159,7 +161,6 @@ guardar.addEventListener("click", async function () {
         console.error("Error adding document: ", e);
     }
 });
-
 
 twitter.addEventListener("click", function () {
     signInWithPopup(auth, providertwitter)
