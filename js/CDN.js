@@ -8,6 +8,8 @@ import {
     GoogleAuthProvider,
     signInWithPopup,
     FacebookAuthProvider,
+    TwitterAuthProvider,
+    signInWithPopup,
 } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
 
 import {
@@ -29,6 +31,7 @@ const firebaseConfig = {
 
 const providergoogle = new GoogleAuthProvider();
 const providerfacebook = new FacebookAuthProvider();
+const providertwitter = new TwitterAuthProvider();
 
 const app = initializeApp(firebaseConfig); /*inicializa firebase*/
 const auth = getAuth(app);
@@ -48,7 +51,7 @@ const guardar = document.getElementById("Guardar");
 const nombre = document.getElementById("nom");
 const apellido = document.getElementById("apell");
 const edad = document.getElementById("edad");
-
+const twitter = document.getElementById("twitter");
 
 //crear un usuario nuevo
 
@@ -82,22 +85,6 @@ log.addEventListener("click", function () {
             const errorMessage = error.message;
             alert(errorCode + " + " + errorMessage);
         });
-});
-
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        console.log(user.email);
-        header.innerHTML = user.email;
-        div.classList.add("hide");
-        divOcultar.classList.remove("hide");
-
-        // ...
-    } else {
-        console.log("no user");
-        header.innerHTML = "Registrate o inicia sesion";
-        // User is signed out
-        // ...
-    }
 });
 
 cerrar.addEventListener("click", function () {
@@ -159,23 +146,60 @@ face.addEventListener("click", function () {
         });
 });
 
-
-guardar.addEventListener('click', async function () {
+guardar.addEventListener("click", async function () {
     try {
         const docRef = await addDoc(collection(db, "users"), {
             Nombre: nombre.value,
             Apellidos: apellido.value,
             Edad: edad.value,
         });
-        console.log("Document written with ID: ", docRef.id);
+        alert(
+            "Se han guardado todos tu datos .) idiota estupidos todos " +
+                docRef.id
+        );
     } catch (e) {
         console.error("Error adding document: ", e);
     }
 });
 
 
+twitter.addEventListener("click", function () {
+    signInWithPopup(auth, providertwitter)
+        .then((result) => {
+            // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
+            // You can use these server side with your app's credentials to access the Twitter API.
+            const credential = TwitterAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+            const secret = credential.secret;
 
+            // The signed-in user info.
+            const user = result.user;
+            // ...
+        })
+        .catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.customData.email;
+            // The AuthCredential type that was used.
+            const credential = TwitterAuthProvider.credentialFromError(error);
+            // ...
+        });
+});
 
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        console.log(user.email);
+        header.innerHTML = user.email;
+        div.classList.add("hide");
+        divOcultar.classList.remove("hide");
 
-
-// // https://pruebas-cf6a8.firebaseapp.com/__/auth/handler
+        // ...
+    } else {
+        console.log("no user");
+        header.innerHTML = "Registrate o inicia sesion";
+        // User is signed out
+        // ...
+    }
+});
