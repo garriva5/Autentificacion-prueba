@@ -128,8 +128,7 @@ face.addEventListener("click", function () {
             // The signed-in user info.
             const user = result.user;
             // This gives you a Facebook Access Token. You can use it to access the Facebook API   ..
-            const credential =
-                FacebookAuthProvider.credentialFromResult(result);
+            const credential =FacebookAuthProvider.credentialFromResult(result); 
             const accessToken = credential.accessToken;
             // ...
         })
