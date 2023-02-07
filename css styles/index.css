@@ -58,14 +58,12 @@ header{
     justify-content: center;
 }
 
-.botonesGandF{
+.botonesGandF, .botonactualizar{
     display: grid;
     grid-template-rows: 1fr 1fr;
     margin-top: .5rem;
-    row-gap: .5rem;
-    
+    row-gap: .5rem; 
 }
-
     
 .hide{
     display: none;

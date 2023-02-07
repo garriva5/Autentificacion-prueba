@@ -15,7 +15,8 @@ import {
     getFirestore,
     collection,
     addDoc,
-    // getDoc,
+    doc,
+    setDoc,
 } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -51,6 +52,7 @@ const nombre = document.getElementById("nom");
 const apellido = document.getElementById("apell");
 const edad = document.getElementById("edad");
 const twitter = document.getElementById("twitter");
+const actualizar = document.getElementById("actualizar");
 
 //crear un usuario nuevo
 
@@ -129,7 +131,8 @@ face.addEventListener("click", function () {
             const user = result.user;
 
             // This gives you a Facebook Access Token. You can use it to access the Facebook API.
-            const credential = FacebookAuthProvider.credentialFromResult(result);
+            const credential =
+                FacebookAuthProvider.credentialFromResult(result);
             const accessToken = credential.accessToken;
 
             // ...
@@ -141,25 +144,9 @@ face.addEventListener("click", function () {
             // The email of the user's account used.
             const email = error.customData.email;
             // The AuthCredential type that was used.
-            const credential = FacebookAuthProvider.credentialFromError(error); 
+            const credential = FacebookAuthProvider.credentialFromError(error);
             // ...
         });
-});
-
-guardar.addEventListener("click", async function () {
-    try {
-        const docRef = await addDoc(collection(db, "users"), {
-            Nombre: nombre.value,
-            Apellidos: apellido.value,
-            Edad: edad.value,
-        });
-        alert(
-            "Se han guardado todos tu datos .) idiota estupidos todos " +
-                docRef.id
-        );
-    } catch (e) {
-        console.error("Error adding document: ", e);
-    }
 });
 
 twitter.addEventListener("click", function () {
@@ -186,7 +173,6 @@ twitter.addEventListener("click", function () {
             // ...
         });
 });
-
 onAuthStateChanged(auth, (user) => {
     if (user) {
         console.log(user.email);
@@ -201,4 +187,29 @@ onAuthStateChanged(auth, (user) => {
         // User is signed out
         // ...
     }
+});
+
+guardar.addEventListener("click", async function () {
+    try {
+        const docRef = await addDoc(collection(db, "users", "usuarios"), {
+            Nombre: nombre.value,
+            Apellidos: apellido.value,
+            Edad: edad.value,
+        });
+        alert( "Se han guardado todos tu datos .) idiota estupidos todos " + docRef.id);
+
+    } catch (e) {
+        console.error("Error adding document: ", e);
+    }
+});
+
+// Add a new document in collection "cities"
+actualizar.addEventListener("click", async function () {
+    await setDoc(doc(db, "users", "usuarios"), {
+            Nombre: nombre.value,
+            Apellidos: apellido.value,
+            Edad: edad.value,
+    });
+    alert("se han actualizado los datos" + docRef.id);
+
 });
