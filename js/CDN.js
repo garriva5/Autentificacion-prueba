@@ -191,7 +191,7 @@ onAuthStateChanged(auth, (user) => {
 
 guardar.addEventListener("click", async function () {
     try {
-        const docRef = await addDoc(collection(db, "users", "usuarios"), {
+        const docRef = await addDoc(collection(db, "users"), {
             Nombre: nombre.value,
             Apellidos: apellido.value,
             Edad: edad.value,
