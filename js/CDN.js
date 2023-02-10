@@ -14,9 +14,12 @@ import {
 import {
     getFirestore,
     collection,
-    addDoc,
-    doc,
     setDoc,
+    getDocs,
+    doc,
+    getDoc,
+    updateDoc,
+    deleteDoc,
 } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -33,26 +36,50 @@ const providergoogle = new GoogleAuthProvider();
 const providerfacebook = new FacebookAuthProvider();
 const providertwitter = new TwitterAuthProvider();
 
-const app = initializeApp(firebaseConfig); /*inicializa firebase*/
+/*inicializa firebase*/
+const app = initializeApp(firebaseConfig); 
 const auth = getAuth(app);
 const db = getFirestore(app); // Initialize Cloud Firestore and get a reference to the service
 
+//reguistro -------------
 const log = document.getElementById("log");
 const email = document.getElementById("email");
 const pass = document.getElementById("pass");
-const crear = document.getElementById("crear");
-const header = document.getElementById("header");
-const cerrar = document.getElementById("cerrar");
-const div = document.getElementById("inicio");
-const divOcultar = document.getElementById("ocultar");
+//reguistro con apps
 const gog = document.getElementById("google");
 const face = document.getElementById("facebook");
-const guardar = document.getElementById("Guardar");
+const twitter = document.getElementById("twitter");
+//CRUD------------
+//creat---------
 const nombre = document.getElementById("nom");
 const apellido = document.getElementById("apell");
 const edad = document.getElementById("edad");
-const twitter = document.getElementById("twitter");
+const crear = document.getElementById("crear");
+const guardar = document.getElementById("Guardar");
+const cerrar = document.getElementById("cerrar");
+//mostrar o leer 
+const leer = document.getElementById("leer");
+const tabla = document.getElementById("tabla");
+const inputId =  document.getElementById("id");
+//update--------
 const actualizar = document.getElementById("actualizar");
+const buscarAct = document.getElementById("BuscarAct");
+const inputActid = document.getElementById("id-ac");
+const inputActname = document.getElementById("nombre-ac");
+const inputActlast = document.getElementById("apellido-ac");
+const inputActedad = document.getElementById("edad-ac");
+//delete borrar--------
+const borrar = document.getElementById("borrar");
+
+//divs nesesarios 
+const header = document.getElementById("header");
+const div = document.getElementById("inicio");
+const divOcultar = document.getElementById("ocultar");
+
+
+
+// const actualizar = document.getElementById("actualizar");
+// const borrar = document.getElementById("borrar");
 
 //crear un usuario nuevo
 
@@ -189,27 +216,71 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-guardar.addEventListener("click", async function () {
+guardar.addEventListener("click", async () => {
     try {
-        const docRef = await addDoc(collection(db, "users"), {
+        await setDoc(doc(db, "users", nombre.value), {
             Nombre: nombre.value,
             Apellidos: apellido.value,
             Edad: edad.value,
         });
-        alert( "Se han guardado todos tu datos .) idiota estupidos todos " + docRef.id);
-
-    } catch (e) {
+        alert(`Documento ${nombre.value} creado!`);
+    } catch (error) {
+        alert("No has completado todos los datos correspondientes");    
         console.error("Error adding document: ", e);
     }
 });
 
-// Add a new document in collection "cities"
-actualizar.addEventListener("click", async function () {
-    await setDoc(doc(db, "users", "usuarios"), {
-            Nombre: nombre.value,
-            Apellidos: apellido.value,
-            Edad: edad.value,
-    });
-    alert("se han actualizado los datos" + docRef.id);
 
+leer.addEventListener("click", async () => {
+    tabla.innerHTML =
+        `<tr>
+        <td> |---Id---| </td>
+        <td> |---Nombre---| </td>
+        <td> |---Apellido---| </td>
+        <td> |---Edad---|   </td>
+    </tr>`;
+    
+
+    const querySnapshot = await getDocs(collection(db, "users"));
+    querySnapshot.forEach((doc) => {
+
+        console.log(doc.id, " => ", doc.data());
+        tabla.innerHTML +=
+            `<tr>
+            <td>${doc.id}</td>
+            <td>${doc.data().Nombre}</td>
+            <td>${doc.data().Apellidos}</td>
+            <td>${doc.data().Edad}</td>
+        </tr>`;
+    });
 });
+
+BuscarAct.addEventListener("click", async () => {
+    const docRef = doc(db, "users", inputActid.value);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        inputActname.value = docSnap.data().Nombre;
+        inputActlast.value = docSnap.data().Apellidos;
+        inputActedad.value = docSnap.data().Edad;
+        console.log("Document data:", docSnap.data());
+    } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+    }
+});
+
+actualizar.addEventListener("click", async() => {
+    const elementRef = doc(db, "users", inputActid.value);
+
+    await updateDoc(elementRef, {
+            Nombre: inputActname.value,
+            Apellidos: inputActlast.value,
+            Edad: inputActedad.value,
+    });
+});
+
+borrar.addEventListener("click", async()=>{
+    await deleteDoc(doc(db, "users", inputActid.value));
+});
+
