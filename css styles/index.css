@@ -41,7 +41,7 @@ header{
   
 
   /*-----------------------Todos los Botones------------*/
-.boton {
+.boton, .footer{
     background-color: rgb(255, 0, 0);
     color: var(--blanco); /* EL PADDING ES PARA PONER COMO UN MARGEN O SEPARACION EN TODAS LAS DIRECCIOES*/ 
     font-size: 1.3rem;
@@ -75,12 +75,16 @@ header{
     margin-top: 2rem;
 }
 
+
+#map { 
+ position: absolute; 
+ top: 0; 
+ bottom: 0; 
+ width: 100%; }
+
+
 .footer{
     position: absolute;
     bottom: .5rem;
-    font-family: Arial, Helvetica, sans-serif;
-    font-style: oblique;
-    font-size: .7rem;
     margin-left: 1rem;
 }
-

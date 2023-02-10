@@ -76,6 +76,12 @@ const header = document.getElementById("header");
 const div = document.getElementById("inicio");
 const divOcultar = document.getElementById("ocultar");
 
+//-----mapa------
+const showmap = document.getElementById("mostrarmap");
+const mapa = document.getElementById("map");
+const cerrarmapa = document.getElementById("cerrarmapa");
+
+
 
 
 // const actualizar = document.getElementById("actualizar");
@@ -200,6 +206,7 @@ twitter.addEventListener("click", function () {
             // ...
         });
 });
+
 onAuthStateChanged(auth, (user) => {
     if (user) {
         console.log(user.email);
@@ -252,6 +259,7 @@ leer.addEventListener("click", async () => {
             <td>${doc.data().Apellidos}</td>
             <td>${doc.data().Edad}</td>
         </tr>`;
+
     });
 });
 
@@ -267,6 +275,7 @@ BuscarAct.addEventListener("click", async () => {
     } else {
         // doc.data() will be undefined in this case
         console.log("No such document!");
+        alert("No se encontraron los datos con este ID, O Este ID es incorrecto")
     }
 });
 
@@ -277,10 +286,54 @@ actualizar.addEventListener("click", async() => {
             Nombre: inputActname.value,
             Apellidos: inputActlast.value,
             Edad: inputActedad.value,
+
     });
+    alert("se actualizaron los datos de " + inputActid)
 });
 
 borrar.addEventListener("click", async()=>{
     await deleteDoc(doc(db, "users", inputActid.value));
+
+    alert("se ha borrado todo el usuario de " + inputActid)
 });
+
+
+//-----------------mapbox-----------------
+mapboxgl.accessToken =
+    "pk.eyJ1IjoiZ2Fycml2YTUiLCJhIjoiY2xkdnY5MzY3MDFhbTQwanFsZHY3ZzR4cCJ9.sq4e3JWrU8ZPE8u84dPRbA";
+const map = new mapboxgl.Map({
+    container: "map", // container ID
+    // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+    style: "mapbox://styles/mapbox/streets-v12", // style URL
+    center: [-103.50784,25.59504], // starting position [lng, lat]
+    zoom: 10, // starting zoom
+});
+
+const marker1 = new mapboxgl.Marker()
+    .setLngLat([-103.50784,25.59504])
+    .addTo(map);
+
+
+map.addControl(
+    new MapboxDirections({
+        accessToken: mapboxgl.accessToken,
+    }),
+    
+);
+
+
+showmap.addEventListener( 'click',  function () {
+    mapa.classList.remove("hide");
+    showmap.classList.add("hide");
+    cerrarmapa.classList.remove("hide");
+
+});
+
+cerrarmapa.addEventListener( 'click',  function () {
+    mapa.classList.add("hide");
+    showmap.classList.remove("hide");
+    cerrarmapa.classList.add("hide");
+
+});
+
 

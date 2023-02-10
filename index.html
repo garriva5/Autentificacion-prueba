@@ -7,13 +7,22 @@
     <title>Autenticacion</title>
     <link rel="preload" href="../css styles/index.css" as="style">
     <link href="../css styles/index.css" rel="stylesheet">
-
     <script src="https://kit.fontawesome.com/360b0549be.js" crossorigin="anonymous"></script>
-</head>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css"rel="stylesheet"/>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
 
+</head>
     
 <header id="header"></header>
+
 <body>
+    <!-- ------------------mapbox---------------- -->
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css"/>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.css" type="text/css">
+
+
     <main>
             <div class="sing-in" id="inicio">
                     <h1>Autenticacion de cuentas</h1>
@@ -71,7 +80,7 @@
 
                     <div class="botonesborrar">
                         <button id = "borrar" class="boton" > Borrar datos </button>
-                        
+                        <button id = "mostrarmap" class="boton" > Mostrar mapa </button>
                     </div>
 
                     <div class="tabla1">
@@ -79,15 +88,22 @@
                         <button id = "leer" class="boton" > Mostrar datos </button>
 
                     </div>
-                </div>   
-                <input  type="" id="id" value="" disabled class="hide" > 
+               
 
+
+
+                </div> 
             </div>
+           
+                            <!-- input para id vacio -->
+                            <div id="map" class="hide"></div>
 
+
+        <input  type="" id="id" value="" disabled class="hide" >
     </main>
 
     <footer class="footer">
-        <p>Todos los derechos reservados, Omar Emiliano </p>
+         <button id = "cerrarmapa" class="boton hide" > Cerrar mapa </button>
     </footer>
    
     <script type="module" src="../js/CDN.js"></script>
