@@ -208,7 +208,6 @@ twitter.addEventListener("click", function () {
 });
 
 github.addEventListener("click", function () {
-    const auth = getAuth();
     signInWithPopup(auth, providergithub)
         .then((result) => {
             // This gives you a GitHub Access Token. You can use it to access the GitHub API.
