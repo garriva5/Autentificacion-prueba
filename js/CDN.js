@@ -9,6 +9,7 @@ import {
     FacebookAuthProvider,
     TwitterAuthProvider,
     signInWithPopup,
+    GithubAuthProvider,
 } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
 
 import {
@@ -35,9 +36,10 @@ const firebaseConfig = {
 const providergoogle = new GoogleAuthProvider();
 const providerfacebook = new FacebookAuthProvider();
 const providertwitter = new TwitterAuthProvider();
+const providergithub = new GithubAuthProvider();
 
 /*inicializa firebase*/
-const app = initializeApp(firebaseConfig); 
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app); // Initialize Cloud Firestore and get a reference to the service
 
@@ -49,6 +51,7 @@ const pass = document.getElementById("pass");
 const gog = document.getElementById("google");
 const face = document.getElementById("facebook");
 const twitter = document.getElementById("twitter");
+const github = document.getElementById("github");
 //CRUD------------
 //creat---------
 const nombre = document.getElementById("nom");
@@ -57,10 +60,10 @@ const edad = document.getElementById("edad");
 const crear = document.getElementById("crear");
 const guardar = document.getElementById("Guardar");
 const cerrar = document.getElementById("cerrar");
-//mostrar o leer 
+//mostrar o leer
 const leer = document.getElementById("leer");
 const tabla = document.getElementById("tabla");
-const inputId =  document.getElementById("id");
+const inputId = document.getElementById("id");
 //update--------
 const actualizar = document.getElementById("actualizar");
 const buscarAct = document.getElementById("BuscarAct");
@@ -71,7 +74,7 @@ const inputActedad = document.getElementById("edad-ac");
 //delete borrar--------
 const borrar = document.getElementById("borrar");
 
-//divs nesesarios 
+//divs nesesarios
 const header = document.getElementById("header");
 const div = document.getElementById("inicio");
 const divOcultar = document.getElementById("ocultar");
@@ -80,9 +83,6 @@ const divOcultar = document.getElementById("ocultar");
 const showmap = document.getElementById("mostrarmap");
 const mapa = document.getElementById("map");
 const cerrarmapa = document.getElementById("cerrarmapa");
-
-
-
 
 // const actualizar = document.getElementById("actualizar");
 // const borrar = document.getElementById("borrar");
@@ -207,6 +207,31 @@ twitter.addEventListener("click", function () {
         });
 });
 
+github.addEventListener("click", function () {
+    const auth = getAuth();
+    signInWithPopup(auth, providergithub)
+        .then((result) => {
+            // This gives you a GitHub Access Token. You can use it to access the GitHub API.
+            const credential = GithubAuthProvider.credentialFromResult(result);
+            const token = credential.accessToken;
+
+            // The signed-in user info.
+            const user = result.user;
+            // IdP data available using getAdditionalUserInfo(result)
+            // ...
+        })
+        .catch((error) => {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.customData.email;
+            // The AuthCredential type that was used.
+            const credential = GithubAuthProvider.credentialFromError(error);
+            // ...
+        });
+});
+
 onAuthStateChanged(auth, (user) => {
     if (user) {
         console.log(user.email);
@@ -232,34 +257,28 @@ guardar.addEventListener("click", async () => {
         });
         alert(`Documento ${nombre.value} creado!`);
     } catch (error) {
-        alert("No has completado todos los datos correspondientes");    
+        alert("No has completado todos los datos correspondientes");
         console.error("Error adding document: ", e);
     }
 });
 
-
 leer.addEventListener("click", async () => {
-    tabla.innerHTML =
-        `<tr>
+    tabla.innerHTML = `<tr>
         <td> |---Id---| </td>
         <td> |---Nombre---| </td>
         <td> |---Apellido---| </td>
         <td> |---Edad---|   </td>
     </tr>`;
-    
 
     const querySnapshot = await getDocs(collection(db, "users"));
     querySnapshot.forEach((doc) => {
-
         console.log(doc.id, " => ", doc.data());
-        tabla.innerHTML +=
-            `<tr>
+        tabla.innerHTML += `<tr>
             <td>${doc.id}</td>
             <td>${doc.data().Nombre}</td>
             <td>${doc.data().Apellidos}</td>
             <td>${doc.data().Edad}</td>
         </tr>`;
-
     });
 });
 
@@ -275,28 +294,28 @@ BuscarAct.addEventListener("click", async () => {
     } else {
         // doc.data() will be undefined in this case
         console.log("No such document!");
-        alert("No se encontraron los datos con este ID, O Este ID es incorrecto")
+        alert(
+            "No se encontraron los datos con este ID, O Este ID es incorrecto"
+        );
     }
 });
 
-actualizar.addEventListener("click", async() => {
+actualizar.addEventListener("click", async () => {
     const elementRef = doc(db, "users", inputActid.value);
 
     await updateDoc(elementRef, {
-            Nombre: inputActname.value,
-            Apellidos: inputActlast.value,
-            Edad: inputActedad.value,
-
+        Nombre: inputActname.value,
+        Apellidos: inputActlast.value,
+        Edad: inputActedad.value,
     });
-    alert("se actualizaron los datos de " + inputActid)
+    alert("se actualizaron los datos de " + inputActid);
 });
 
-borrar.addEventListener("click", async()=>{
+borrar.addEventListener("click", async () => {
     await deleteDoc(doc(db, "users", inputActid.value));
 
-    alert("se ha borrado todo el usuario de " + inputActid)
+    alert("se ha borrado todo el usuario de " + inputActid);
 });
-
 
 //-----------------mapbox-----------------
 mapboxgl.accessToken =
@@ -305,35 +324,28 @@ const map = new mapboxgl.Map({
     container: "map", // container ID
     // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
     style: "mapbox://styles/mapbox/streets-v12", // style URL
-    center: [-103.50784,25.59504], // starting position [lng, lat]
+    center: [-103.50784, 25.59504], // starting position [lng, lat]
     zoom: 10, // starting zoom
 });
 
 const marker1 = new mapboxgl.Marker()
-    .setLngLat([-103.50784,25.59504])
+    .setLngLat([-103.50784, 25.59504])
     .addTo(map);
-
 
 map.addControl(
     new MapboxDirections({
         accessToken: mapboxgl.accessToken,
-    }),
-    
+    })
 );
 
-
-showmap.addEventListener( 'click',  function () {
+showmap.addEventListener("click", function () {
     mapa.classList.remove("hide");
     showmap.classList.add("hide");
     cerrarmapa.classList.remove("hide");
-
 });
 
-cerrarmapa.addEventListener( 'click',  function () {
+cerrarmapa.addEventListener("click", function () {
     mapa.classList.add("hide");
     showmap.classList.remove("hide");
     cerrarmapa.classList.add("hide");
-
 });
-
-
